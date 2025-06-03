@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkSnap - Modern URL Shortener</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <span class="logo-icon">🚀</span>
+                <h1>LinkSnap</h1>
+            </div>
+            <p class="subtitle">Transform long URLs into powerful short links</p>
+        </div>
+
+        <div class="shortener-card">
+            <form action="/shorten" method="post" class="url-form">
+                <div class="input-group">
+                    <input type="url" name="original_url" placeholder="Paste your long URL here..." required>
+                    <button type="submit" class="shorten-btn">
+                        <span>Shorten</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+
+            {% if shortened %}
+            <div class="result-section">
+                <div class="result-card">
+                    <div class="result-header">
+                        <span class="success-icon">✨</span>
+                        <h3>Your link is ready!</h3>
+                    </div>
+                    <div class="url-display">
+                        <input type="text" value="{{ shortened }}" readonly class="shortened-url">
+                        <button class="copy-btn" onclick="copyToClipboard()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <a href="{{ shortened }}" target="_blank" class="test-link">Test your link →</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h4>Lightning Fast</h4>
+                <p>Generate short links instantly</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <h4>Secure & Reliable</h4>
+                <p>Your links are safe with us</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h4>Track Performance</h4>
+                <p>Monitor your link analytics</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const urlInput = document.querySelector('.shortened-url');
+            urlInput.select();
+            document.execCommand('copy');
+            
+            const copyBtn = document.querySelector('.copy-btn');
+            const originalHTML = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<span style="color: #10b981;">✓</span>';
+            
+            setTimeout(() => {
+                copyBtn.innerHTML = originalHTML;
+            }, 2000);
+        }
+
+        // Add form submission animation
+        document.querySelector('.url-form').addEventListener('submit', function(e) {
+            const button = document.querySelector('.shorten-btn');
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 150);
+        });
+    </script>
+</body>
+</html>
